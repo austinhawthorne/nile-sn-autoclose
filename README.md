@@ -97,7 +97,7 @@ echo -n 'myuser:mypassword' | base64
 
 In Nile:
 1.  Go to Global Settings > Integrations, select "Setup Integration" and select "Webhook"
-2.  Setup new webhook with the following parameters, Name = "Service Now Alerts, Token = "Basic <your_base64_encoded_key", URL = http://<your_servicenow_instance_url><resource_path_from_step_7>, then click Next.
+2.  Setup new webhook with the following parameters, Name = "Service Now Alerts, Token = "Basic <your_base64_encoded_key>", URL = http://<your_servicenow_instance_url><resource_path_from_step_7>, then click Next.
 3.  Select all alerts you are interested in (select all except My Nile Incidents) then click Save.
 
 To test, can use something like Curl or Postman to generate an alert with alertStatus = Created to create the ticket and then send again with alertStatus = Resolved.  You need to ensure the "id" is the same for both.  Here is a sample JSON body you can use for the test:
