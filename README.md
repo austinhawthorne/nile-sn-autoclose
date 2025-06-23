@@ -3,19 +3,19 @@ Instructions and script for automatically opening and closing a ticket in Servic
 
 Nile provides a webhook that sends:
 
-'''
+```
 Infrastructure alerts
 Service alerts
 Application alerts
 Security alerts
-'''
+```
 
 A number of these alerts are auto-remediated by the Nile service or otherwise.  Some customer's may want these alerts to open tickets automatically in ServiceNow and to close automatically if the service resolves the issue.  We can use the following fields within the Nile Webhook to accomplish this:
 
-'''
+```
 'alertStatus' = Created or Resolved
 'id' = unique alert identifier
-'''
+```
 
 Follow these instructions to integrate Nile webhooks into ServiceNow with auto open/close function based on the 'alertStatus' field.
 
@@ -28,7 +28,7 @@ In ServiceNow:
 6.  Under Resources click "New"
 7.  Create a new resources with the Name = nile_alert_processing, copy the Resource Path and save for later, HTTP Method = POST, copy and paste the following into the script body and then click "Update":
 
-'''
+```
 (function processRequest(request, response) {
     var body = request.body.data;
 
@@ -87,13 +87,13 @@ if (alertStatus === "Resolved") {
     response.setStatus(200);
     response.setBody({ result: "Processed" });
 })(request, response);
-'''
+```
 
 8.  Convert your admin username and password to a Base64 encoded string to use for Basic Auth, for example:
 
-'''
+```
 echo -n 'myuser:mypassword' | base64
-'''
+```
 
 9.  In Nile, go to Global Settings > Integrations, select "Setup Integration" and select "Webhook"
 10.  Setup new webhook with the following parameters, Name = "Service Now Alerts, Token = "Basic <your_base64_encoded_key", URL = http://<your_servicenow_instance_url><resource_path_from_step_7>, then click Next.
@@ -101,7 +101,7 @@ echo -n 'myuser:mypassword' | base64
 
 To test, can use something like Curl or Postman to generate an alert with alertStatus = Created to create the ticket and then send again with alertStatus = Resolved.  You need to ensure the "id" is the same for both.  Here is a sample JSON body you can use for the test:
 
-'''
+```
 {
   "version": "1.0",
   "id": "12345678-9abc-def-1234-56789abcdef1",
@@ -119,4 +119,4 @@ To test, can use something like Curl or Postman to generate an alert with alertS
   "floor": "All",
   "additionalInformation": "https://docs.nilesecure.com/customer-infrastructure-alerts"
 }
-'''
+```
